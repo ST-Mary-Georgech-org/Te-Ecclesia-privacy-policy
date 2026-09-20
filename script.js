@@ -337,6 +337,34 @@ function renderSafetyTable(lang) {
   tbody.innerHTML = html;
 }
 
+let currentTheme = localStorage.getItem('te_theme') || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  localStorage.setItem('te_theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+
+  const sunIcon = document.getElementById('themeIconSun');
+  const moonIcon = document.getElementById('themeIconMoon');
+  const themeBtn = document.getElementById('themeToggleBtn');
+
+  if (theme === 'dark') {
+    if (sunIcon) sunIcon.style.display = 'block';
+    if (moonIcon) moonIcon.style.display = 'none';
+    if (themeBtn) {
+      themeBtn.setAttribute('title', currentLang === 'ar' ? 'التحويل للوضع النهاري' : 'Switch to Light Mode');
+      themeBtn.setAttribute('aria-label', currentLang === 'ar' ? 'التحويل للوضع النهاري' : 'Switch to Light Mode');
+    }
+  } else {
+    if (sunIcon) sunIcon.style.display = 'none';
+    if (moonIcon) moonIcon.style.display = 'block';
+    if (themeBtn) {
+      themeBtn.setAttribute('title', currentLang === 'ar' ? 'التحويل للوضع الليلي' : 'Switch to Dark Mode');
+      themeBtn.setAttribute('aria-label', currentLang === 'ar' ? 'التحويل للوضع الليلي' : 'Switch to Dark Mode');
+    }
+  }
+}
+
 function applyLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('te_privacy_lang', lang);
@@ -362,16 +390,35 @@ function applyLanguage(lang) {
   }
 
   renderSafetyTable(lang);
+  applyTheme(currentTheme);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   applyLanguage(currentLang);
+  applyTheme(currentTheme);
+
+  const themeBtn = document.getElementById('themeToggleBtn');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => {
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(nextTheme);
+    });
+  }
 
   const langBtn = document.getElementById('langToggleBtn');
   if (langBtn) {
     langBtn.addEventListener('click', () => {
       const nextLang = currentLang === 'ar' ? 'en' : 'ar';
       applyLanguage(nextLang);
+    });
+  }
+
+  // Listen to OS theme changes if user has not set explicit preference
+  if (window.matchMedia) {
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!localStorage.getItem('te_theme')) {
+        applyTheme(e.matches ? 'dark' : 'light');
+      }
     });
   }
 
