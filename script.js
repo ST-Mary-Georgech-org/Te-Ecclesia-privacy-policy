@@ -1,117 +1,341 @@
+const safetyTableData = {
+  ar: [
+    {
+      type: "الهوية الشخصية والاتصال",
+      items: "الاسم الرباعي، الرقم القومي (14 رقماً)، تاريخ الميلاد، النوع، أرقام الهواتف، البريد الإلكتروني، العنوان التفصيلي",
+      purpose: "إدارة الحسابات، التحقق من الشخصية والعمر، والافتقاد الرعوي والأسري",
+      shared: "لا تتم مشاركتها",
+      encrypted: "مشفرة (HTTPS / TLS)",
+      delete: "نعم (عبر التطبيق أو الويب)"
+    },
+    {
+      type: "الصور والمستندات الرسمية",
+      items: "الصورة الشخصية، صورة بطاقة الرقم القومي (للبالغين)، شهادة الميلاد المميكنة (للأطفال دون 13 عاماً)، شهادة الرسامة",
+      purpose: "المراجعة والتثبت البشري اليدوي من هوية المشتركين والأطفال والشمامسة",
+      shared: "لا تتم مشاركتها",
+      encrypted: "مشفرة في التخزين والنقل",
+      delete: "نعم (عند طلب الحذف النهائي)"
+    },
+    {
+      type: "البيانات الرعوية والكنسية",
+      items: "الرتبة الكنسية، بيانات أب الاعتراف، سجلات مدرسة الشمامسة، حضور القداسات ومدارس الأحد عبر QR",
+      purpose: "تنظيم الأنشطة الروحية والتعليم الكنسي والرعاية الرعوية الكنسية",
+      shared: "لا تتم مشاركتها نهائياً",
+      encrypted: "مشفرة في قواعد البيانات",
+      delete: "نعم (مع حفظ الأرشيف التاريخي)"
+    },
+    {
+      type: "معرفات الأجهزة والإشعارات",
+      items: "رمز تعريف الجهاز للإشعارات (FCM Token)",
+      purpose: "إرسال تنبيهات مواعيد القداسات والاجتماعات والتذكيرات الهامة",
+      shared: "Google Firebase (مزود تقني)",
+      encrypted: "مشفرة بالكامل",
+      delete: "نعم (تُلغى فوراً عند تسجيل الخروج)"
+    },
+    {
+      type: "بيانات الأداء وتشخيص الأعطال",
+      items: "سجلات الأعطال البرمجية الفنية (Crashlytics Logs) ومعلومات نظام التشغيل ونوع الجهاز",
+      purpose: "تشخيص الأخطاء الفنية وتحسين استقرار التطبيق وكفاءته",
+      shared: "Google Firebase (مزود تقني)",
+      encrypted: "مشفرة بالكامل",
+      delete: "نعم (تُحذف دورياً تلقائياً)"
+    }
+  ],
+  en: [
+    {
+      type: "Personal Identity & Contact",
+      items: "Full Name, National ID (14 digits), Date of Birth, Gender, Mobile/Home Phone, Email, Detailed Residential Address",
+      purpose: "Account management, identity & age verification, pastoral community visits",
+      shared: "Never shared",
+      encrypted: "Encrypted (HTTPS / TLS)",
+      delete: "Yes (via In-App or Web Form)"
+    },
+    {
+      type: "Photos & Official Documents",
+      items: "Profile photo, National ID card (adults), Government Birth Certificate (children under 13), Deacon Ordination Certificate",
+      purpose: "Mandatory human identity verification of members, children, and deacons",
+      shared: "Never shared",
+      encrypted: "Encrypted at rest & transit",
+      delete: "Yes (upon permanent deletion)"
+    },
+    {
+      type: "Ecclesiastical & Pastoral Records",
+      items: "Church role, Confession priest details, Deacon school records, Liturgy & Sunday school attendance via QR Code",
+      purpose: "Spiritual education management, attendance tracking, pastoral pastoral care",
+      shared: "Never shared with third parties",
+      encrypted: "Encrypted in database",
+      delete: "Yes (archival exception for church registers)"
+    },
+    {
+      type: "Device Identifiers & Push Tokens",
+      items: "Firebase Cloud Messaging Token (FCM Token)",
+      purpose: "Delivering church liturgy schedules, announcements, and activity reminders",
+      shared: "Google Firebase (Service Provider)",
+      encrypted: "Fully Encrypted",
+      delete: "Yes (revoked immediately on logout/delete)"
+    },
+    {
+      type: "App Performance & Diagnostics",
+      items: "Technical crash logs (Crashlytics), OS version, device model",
+      purpose: "Diagnosing technical bugs, maintaining app stability and crash prevention",
+      shared: "Google Firebase (Service Provider)",
+      encrypted: "Fully Encrypted",
+      delete: "Yes (purged periodically by provider)"
+    }
+  ]
+};
+
 const translations = {
-  en: {
-    pageTitle: "Privacy Policy - TeEcclesia | St. Mary & St. George Church",
-    brandTitle: "TeEcclesia",
-    brandSubtitle: "St. Mary & St. George Church",
-    langLabel: "العربية",
-    badgeTag: "Official Document",
-    heroTitle: "Privacy Policy",
-    heroSubtitle: "Learn how TeEcclesia collects, uses, and safeguards your information in compliance with Google Play Developer policies.",
-    metaDate: "Published: September 20, 2026",
-    metaScope: "Google Play Store Compliance",
-    pillIntro: "Overview",
-    pillCollect: "1. Data Collected",
-    pillUsage: "2. Usage",
-    pillSharing: "3. Sharing",
-    pillSecurity: "4. Security",
-    pillChildren: "5. Children",
-    pillRights: "6. User Rights",
-    pillChanges: "7. Changes",
-    pillContact: "8. Contact Us",
-    introTitle: "Introduction & Scope",
-    introP1: "We at <strong>St. Mary & St. George Church</strong> respect your privacy and are committed to protecting your personal data. This Privacy Policy explains how we collect, use, and protect your information when you use the <strong>TeEcclesia</strong> application available on the Google Play Store.",
-    introP2: "By using the app, you agree to the practices described in this policy.",
-    sec1Title: "1. Information We Collect",
-    sec1Desc: "To ensure transparency and comply with Google Play policies, we outline the data that may be collected:",
-    sec1Item1: "<strong>Personal Data (if applicable):</strong> We may ask you to register basic information such as (name, email address, phone number, or diocese/service affiliation) only if you create an account within the app or register for a conference or church service.",
-    sec1Item2: "<strong>Usage and Diagnostic Data:</strong> We may automatically collect non-personal technical information when you use the app, such as device type, operating system version, and crash logs to improve app performance and stability.",
-    sec1Item3: "<strong>Notifications:</strong> If you consent to receive push notifications, we may collect your device token (such as FCM Token) to enable us to send alerts regarding liturgies, meetings, and church activities.",
-    sec2Title: "2. How We Use Information",
-    sec2Desc: "We never sell or rent your data to any third party. We use the collected data solely for the following purposes:",
-    sec2Item1: "Sending alerts and notifications related to church services and events.",
-    sec2Item2: "Improving user experience and developing app content (such as sermons, hymns, and choir/schedule tables).",
-    sec2Item3: "Responding to inquiries and providing technical support to users.",
-    sec3Title: "3. Data Sharing and Disclosure",
-    sec3Desc: "We do not share your personal data with any third parties, except in the following cases:",
-    sec3Item1: "<strong>Technical Service Providers:</strong> Such as database hosting or notification services (e.g., Firebase by Google), where data is used strictly to operate the app under strict security standards.",
-    sec3Item2: "<strong>Legal Requirements:</strong> If required by law or to protect the rights, property, and safety of the church and our users.",
-    sec4Title: "4. Data Security",
-    sec4P1: "We implement appropriate technical and organizational security measures to protect your data from unauthorized access, alteration, disclosure, or destruction. However, no electronic system is 100% secure, and we cannot guarantee absolute security.",
-    sec5Title: "5. Children’s Privacy",
-    sec5P1: "Our app is intended for families and church services. We do not knowingly collect personally identifiable information from children under the age of 13 without parental consent or the consent of a responsible servant. If you believe we have collected information from a child by mistake, please contact us immediately to have it deleted.",
-    sec6Title: "6. Your Rights Regarding Your Data",
-    sec6Desc: "You have the right at any time to:",
-    sec6Item1: "Request access to your personal data stored with us.",
-    sec6Item2: "Request correction of any inaccurate data.",
-    sec6Item3: "Request the deletion of your account and associated data permanently from the app database.",
-    sec7Title: "7. Changes to This Privacy Policy",
-    sec7P1: "We may update this Privacy Policy from time to time for legal or technical reasons. Any modifications will be posted on this page, and your continued use of the app after modifications are posted constitutes your implicit agreement to the updated policy.",
-    sec8Title: "8. Contact Us",
-    sec8Desc: "If you have any questions or inquiries about this Privacy Policy, please contact us via:",
-    emailLabel: "Email Support",
-    orgLabel: "Organization",
-    churchNameVal: "St. Mary & St. George Church",
-    footerChurch: "St. Mary & St. George Church — TeEcclesia",
-    footerCopy: "© 2026 TeEcclesia. All rights reserved."
-  },
   ar: {
-    pageTitle: "سياسة الخصوصية - تطبيق تي إكليسيا | كنيسة السيدة العذراء والشهيد مارجرجس",
+    docTitle: "سياسة الخصوصية وأمان البيانات - تطبيق تي إكليسيا | كنيسة السيدة العذراء والشهيد مارجرجس",
+    metaDescription: "سياسة الخصوصية الرسمية لتطبيق تي إكليسيا (TeEcclesia) - كنيسة السيدة العذراء والشهيد مارجرجس. متوافق 100% مع سياسات عائلات Google Play وحماية خصوصية الأطفال من سن 9 سنوات.",
     brandTitle: "تي إكليسيا (TeEcclesia)",
     brandSubtitle: "كنيسة السيدة العذراء والشهيد مارجرجس",
     langLabel: "English",
-    badgeTag: "وثيقة رسمية",
-    heroTitle: "سياسة الخصوصية",
-    heroSubtitle: "تعرّف على كيفية جمع تطبيق تي إكليسيا لمعلوماتك واستخدامها وحمايتها بما يتوافق مع سياسات مطوري Google Play.",
-    metaDate: "تاريخ النشر: 20 سبتمبر 2026",
-    metaScope: "متوافق مع سياسات متجر Google Play",
-    pillIntro: "المقدمة",
-    pillCollect: "١. البيانات المجمعة",
-    pillUsage: "٢. الاستخدام",
-    pillSharing: "٣. المشاركة",
-    pillSecurity: "٤. الأمان",
-    pillChildren: "٥. الأطفال",
-    pillRights: "٦. حقوق المستخدم",
-    pillChanges: "٧. التعديلات",
-    pillContact: "٨. تواصل معنا",
-    introTitle: "المقدمة ونطاق العمل",
-    introP1: "نحن في <strong>كنيسة السيدة العذراء والشهيد مارجرجس</strong> نحترم خصوصيتك ونلتزم بحماية بياناتك الشخصية. توضح سياسة الخصوصية هذه كيفية جمع واستخدام وحماية معلوماتك عند استخدامك لتطبيق <strong>TeEcclesia</strong> المتوفر على متجر Google Play.",
-    introP2: "باستخدامك للتطبيق، فإنك توافق على الممارسات الموضحة في هذه السياسة.",
-    sec1Title: "١. المعلومات التي نجمعها",
-    sec1Desc: "لضمان الشفافية والامتثال لسياسات Google Play، نوضح البيانات التي قد يتم جمعها:",
-    sec1Item1: "<strong>البيانات الشخصية (إن وجدت):</strong> قد نطلب منك تسجيل معلومات أساسية مثل (الاسم، البريد الإلكتروني، رقم الهاتف، أو التبعية للإيبارشية/الخدمة) فقط إذا قمت بإنشاء حساب داخل التطبيق أو التسجيل في مؤتمر أو خدمة كنسية.",
-    sec1Item2: "<strong>بيانات الاستخدام والتشخيص:</strong> قد نجمع تلقائيًا معلومات تقنية غير شخصية عند استخدامك للتطبيق، مثل نوع الجهاز، وإصدار نظام التشغيل، وسجلات الأعطال (Crash logs) لتحسين أداء التطبيق واستقراره.",
-    sec1Item3: "<strong>الإشعارات:</strong> إذا وافقت على تلقي الإشعارات الفورية (Push Notifications)، فقد نجمع رمز تعريف جهازك (مثل FCM Token) لتمكيننا من إرسال تنبيهات تتعلق بالقداسات والاجتماعات والأنشطة الكنسية.",
-    sec2Title: "٢. كيفية استخدام المعلومات",
-    sec2Desc: "نحن لا نبيع أو نؤجر بياناتك مطلقاً لأي طرف ثالث. نستخدم البيانات المجمعة فقط للأغراض التالية:",
-    sec2Item1: "إرسال التنبيهات والإشعارات المتعلقة بالخدمات والفعاليات الكنسية.",
-    sec2Item2: "تحسين تجربة المستخدم وتطوير محتوى التطبيق (مثل العظات، الألحان، وجداول الخدمات والخوارس).",
-    sec2Item3: "الرد على الاستفسارات وتقديم الدعم الفني للمستخدمين.",
-    sec3Title: "٣. مشاركة البيانات والإفصاح عنها",
-    sec3Desc: "نحن لا نشارك بياناتك الشخصية مع أي أطراف ثالثة، باستثناء الحالات التالية:",
-    sec3Item1: "<strong>مزودو الخدمات التقنية:</strong> مثل خدمات استضافة قواعد البيانات أو خدمات الإشعارات (مثل Firebase من Google)، حيث تُستخدم البيانات حصراً لتشغيل التطبيق وفق معايير أمان صارمة.",
-    sec3Item2: "<strong>المتطلبات القانونية:</strong> إذا كان ذلك مطلوباً بموجب القانون أو لحماية حقوق وممتلكات وسلامة الكنيسة ومستخدمينا.",
-    sec4Title: "٤. أمان البيانات",
-    sec4P1: "نحن نطبق تدابير أمنية تقنية وتنظيمية مناسبة لحماية بياناتك من الوصول غير المصرح به، أو التعديل، أو الإفصاح، أو التلف. ومع ذلك، لا يوجد أي نظام إلكتروني آمن بنسبة 100%، ولا يمكننا ضمان الأمان المطلق.",
-    sec5Title: "٥. خصوصية الأطفال",
-    sec5P1: "تطبيقنا مخصص للعائلات والخدمات الكنسية. نحن لا نجمع عن قصد معلومات تعريف شخصية من الأطفال دون سن 13 عاماً دون موافقة الوالدين أو موافقة الخادم المسؤول. إذا كنت تعتقد أننا جمعنا معلومات من طفل عن طريق الخطأ، يرجى الاتصال بنا فوراً لحذفها.",
-    sec6Title: "٦. حقوقك فيما يتعلق ببياناتك",
-    sec6Desc: "لديك الحق في أي وقت في:",
-    sec6Item1: "طلب الوصول إلى بياناتك الشخصية المخزنة لدينا.",
-    sec6Item2: "طلب تصحيح أي بيانات غير دقيقة.",
-    sec6Item3: "طلب حذف حسابك والبيانات المرتبطة به نهائياً من قاعدة بيانات التطبيق.",
-    sec7Title: "٧. التغييرات على سياسة الخصوصية",
-    sec7P1: "قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر لأسباب قانونية أو تقنية. سيتم نشر أي تعديلات على هذه الصفحة، ويعد استمرارك في استخدام التطبيق بعد نشر التعديلات بمثابة موافقة ضمنية منك على السياسة المحدثة.",
-    sec8Title: "٨. تواصل معنا",
-    sec8Desc: "إذا كان لديك أي أسئلة أو استفسارات حول سياسة الخصوصية هذه، يرجى التواصل معنا عبر:",
-    emailLabel: "الدعم الفني عبر البريد الإلكتروني",
-    orgLabel: "المؤسسة الكنسية",
+    badgeTagOfficial: "وثيقة رسمية معتمدة",
+    badgeTagFamilies: "متوافق مع سياسة عائلات Google Play (9+ سنوات)",
+    badgeTagVerified: "مراجعة بشرية للبيانات",
+    heroTitle: "سياسة الخصوصية وأمان البيانات",
+    heroSubtitle: "البيان الرسمي لكيفية قيام تطبيق تي إكليسيا (TeEcclesia) بجمع واستخدام وحماية بياناتك وبيانات أبنائك بما يتطابق تماماً مع كود التطبيق الفعلي ومتطلبات سياسة عائلات متجر Google Play.",
+    metaDate: "تاريخ النشر والتحديث: 20 سبتمبر 2026",
+    metaScope: "متوافق مع معايير COPPA و Google Play Families",
+    pillOverview: "نظرة عامة",
+    pillChildren: "١. خصوصية الأطفال (9+)",
+    pillVerification: "٢. المراجعة البشرية والتثبت",
+    pillCollect: "٣. البيانات المجمعة",
+    pillPermissions: "٤. أذونات التطبيق",
+    pillUsage: "٥. استخدام البيانات",
+    pillSharing: "٦. مزودو الخدمات السحابية",
+    pillNoAds: "٧. انعدام الإعلانات والتتبع",
+    pillSecurity: "٨. أمان البيانات",
+    pillDeletion: "٩. طلب حذف الحساب والبيانات",
+    pillDataSafety: "١٠. جدول Google Play Data Safety",
+    pillRights: "١١. حقوق المستخدم",
+    pillContact: "١٢. تواصل معنا",
+    overviewTitle: "نظرة عامة والجهة المسؤولة",
+    overviewP1: "تطبيق <strong>تي إكليسيا (TeEcclesia)</strong> هو منصة رقمية رعوية وتنظيمية غير تجارية، مملوكة ومدارة بالكامل بواسطة <strong>كنيسة السيدة العذراء والشهيد مارجرجس</strong>. يهدف التطبيق إلى خدمة أسر الكنيسة وشعبها من مختلف الأعمار، وتنظيم أنشطة التربية الكنسية (مدارس الأحد)، والقداسات، والاجتماعات الروحية، ومدرسة الشمامسة.",
+    overviewP2: "نلتزم التزاماً صارماً بأعلى معايير حماية البيانات واحترام الخصوصية، وبخاصة خصوصية الأطفال والقُصَّر. هذه الوثيقة مكتوبة بدقة ومطابقة 100% لكود التطبيق الفعلي وقواعد بياناته لتوضيح كافة الممارسات بشفافية تامة أمام المستخدمين وإدارة متجر Google Play.",
+    secChildrenTitle: "١. الفئة المستهدفة وخصوصية الأطفال (سن 9 سنوات فما فوق)",
+    secChildrenP1: "صُمم تطبيق تي إكليسيا ليكون تطبيقاً عائلياً موجهاً لجمهور مشترك (Mixed-Audience Family App) يشمل أولياء الأمور، والشباب، والخدام، والآباء الكهنة، بالإضافة إلى <strong>الأطفال من سن 9 سنوات فما فوق</strong> المسجلين في فصول التربية الكنسية (مدارس الأحد).",
+    secChildrenP2: "امتثالاً لقانون حماية خصوصية الأطفال على الإنترنت (<strong>COPPA</strong>) و<strong>سياسة عائلات متجر Google Play (Google Play Families Policy)</strong>، نطبق الإجراءات الوقائية التالية:",
+    secChildrenItem1: "<strong>موافقة ولي الأمر المسبقة والإلزامية:</strong> لا يُسمح للأطفال دون سن 13 عاماً بإنشاء حسابات بشكل مستقل. عند إدخال الرقم القومي الذي يشير إلى عمر أقل من 13 سنة، يشترط التطبيق صراحة وضع علامة موافقة من ولي الأمر: <em>\"أقر بأنني ولي أمر الطفل وأملك الموافقة لرفع هذه البيانات التنظيمية\"</em>، مع إلزامية تسجيل رقم هاتف ولي الأمر (الأب أو الأم).",
+    secChildrenItem2: "<strong>شهادة الميلاد الرسمية كبديل للبطاقة:</strong> للأطفال دون 13 عاماً، يطلب التطبيق شهادة الميلاد المميكنة الصادرة رسمياً للتثبت من الهوية والسن ومنع انتحال الشخصيات، بدلاً من بطاقة الرقم القومي المخصصة للبالغين.",
+    secChildrenItem3: "<strong>تقييد الرتبة والصلاحيات:</strong> تُقفل رتبة الطفل تلقائياً على <em>\"مخدوم\" (Sunday School Student)</em>، ولا تتاح له أي صلاحيات إدارية أو إمكانية نشر بيانات علنية أو التواصل الحر مع غرباء.",
+    secChildrenItem4: "<strong>انعدام الإعلانات والملفات السلوكية:</strong> لا يعرض التطبيق أي إعلانات على الإطلاق، ولا يقوم بإنشاء أي ملفات سلوكية للأطفال، ولا يجمع أي معرفات إعلانية إطلاقاً.",
+    secVerificationTitle: "٢. التحقق والمراجعة البشرية لكافة طلبات التسجيل (Human-in-the-Loop Review)",
+    reviewBannerTitle: "مراجعة يدوية دقيقة وتوثيق كنسي رسمي",
+    reviewBannerDesc: "لحماية مجتمع الكنيسة وأطفالنا، لا يتم قبول أي حساب أو تفعيله بصورة آلية فورية. كل طلب تسجيل يخضع لمراجعة وتدقيق بشري يدوي من قِبل الآباء الكهنة والمشرفين الإداريين المعتمدين بالكنيسة قبل منح أي حق في الدخول.",
+    secVerificationP1: "حرصاً على سلامة الأطفال وأعضاء الكنيسة، يتضمن نظام التي إكليسيا الخطوات الرقابية التالية:",
+    secVerificationItem1: "<strong>المطابقة الوثائقية:</strong> تتم مطابقة صورة شهادة الميلاد أو بطاقة الرقم القومي يدوياً مع الاسم والرقم القومي وتاريخ الميلاد والبيانات المسجلة.",
+    secVerificationItem2: "<strong>التأكد من التبعية الكنسية:</strong> يتم التحقق من صحة انتماء المخدوم أو الخادم للكنيسة وفصول التربية الكنسية وأب الاعتراف المسجل.",
+    secVerificationItem3: "<strong>حق الرفض والمساءلة:</strong> في حال عدم تطابق البيانات أو عدم موافقة ولي الأمر أو ثبوت أي عدم صحة في المستندات، يتم رفض الطلب فوراً من قِبل الإدارة البشرية مع توضيح سبب الرفض وعدم حفظ الحساب غير المعتمد في المنظومة التشغيلية.",
+    secCollectTitle: "٣. البيانات التي نجمعها والمبررات التقنية والخدمية",
+    secCollectDesc: "وفقاً للكود المصدري للتطبيق وقواعد بيانات السيرفر (PostgreSQL)، نجمع فقط البيانات الضرورية لأداء الخدمة الكنسية والرعوية والتنظيمية:",
+    secCollectItem1: "<strong>بيانات الهوية الشخصية والاتصال:</strong> الاسم الرباعي، الرقم القومي المصري (14 رقماً للتحقق من العمر والهوية ومنع تكرار الحسابات)، تاريخ الميلاد، النوع (ذكر/أنثى)، رقم الهاتف المحمول، الهاتف الأرضي (اختياري)، البريد الإلكتروني (اختياري)، والعنوان السكني المفصل (رقم المبنى، الشارع، التفرع، المنطقة، الدور، الشقة، علامة مميزة) لتنظيم الافتقاد الرعوي والزيارات الكنسية للأسر.",
+    secCollectItem2: "<strong>الصور والمستندات الإدارية:</strong> الصورة الشخصية لحساب المستخدم، وصورة بطاقة الرقم القومي (للبالغين من سن 13 فما فوق)، وصورة شهادة الميلاد المميكنة (للأطفال دون 13 عاماً)، وصورة شهادة الرسامة الشماسية (للشمامسة المُعيّنين). تُحفظ هذه الملفات في مساحات تخزين سحابية آمنة ومشفرة.",
+    secCollectItem3: "<strong>البيانات الرعوية والكنسية:</strong> الرتبة في الخدمة (مخدوم، خادم، ولي أمر، كاهن، مدير نظام)، بيانات أب الاعتراف (سواء كان من داخل الكنيسة أو بيانات كاهن خارجي واسم كنيسته وهاتفه للتنسيق الرعوي)، المرحلة الدراسية وسنة التعليم، وسجلات مدرسة الشمامسة وسداد الاشتراكات الإدارية، وسجلات الحضور في القداسات ومدارس الأحد عبر مسح كود QR، والربط الأسري التشاركي بين أولياء الأمور وأبنائهم.",
+    secCollectItem4: "<strong>البيانات التقنية والتشخيصية:</strong> رمز جهاز الإشعارات (FCM Token) عبر خدمة Google Firebase لتوصيل تنبيهات مواعيد القداسات، وسجلات الأعطال (Crash Logs) وسجلات الاستثناءات غير القاتلة عبر Firebase Crashlytics لتشخيص المشاكل التقنية وضمان استقرار التطبيق.",
+    noCollectBox: "<strong>بيانات نؤكد أننا لا نجمعها إطلاقاً:</strong> نحن لا نطلب ولا نجمع الموقع الجغرافي الحي (GPS)، ولا نسجل أو نستخدم الميكروفون نهائياً، ولا نصل إلى جهات اتصال هاتفك (Contacts)، ولا نسجل أي بيانات دفع إلكتروني أو بطاقات ائتمانية عبر التطبيق، ولا نجمع المعرفات الإعلانية (AD_ID).",
+    secPermissionsTitle: "٤. أذونات الجهاز ومبرراتها التشغيلية",
+    secPermissionsDesc: "يطلب التطبيق الحد الأدنى الضروري من أذونات نظام التشغيل Android/iOS، مع الشرح الكامل للغرض من كل إذن:",
+    secPermissionsItem1: "<strong>إذن الكاميرا (android.permission.CAMERA):</strong> يُستخدم حصرياً لمسح رمز الاستجابة السريعة (QR Code) لتسجيل حضور الأطفال والمخدومين في القداسات الإلهية ودروس مدارس الأحد، وكذلك لالتقاط الصورة الشخصية وصور المستندات التنظيمية داخل شاشات التسجيل وتعديل الملف. لا يتم فتح الكاميرا في الخلفية مطلقاً.",
+    secPermissionsItem2: "<strong>إذن الإشعارات الفورية (android.permission.POST_NOTIFICATIONS):</strong> يُستخدم لإرسال تنبيهات وتذكيرات القداسات، ومواعيد المناسبات والأعياد، وإعلانات التربية الكنسية الصادرة من إدارة الكنيسة. يمكن للمستخدم إيقاف الإشعارات في أي وقت من إعدادات جهازه.",
+    secPermissionsItem3: "<strong>إذن الوصول للصور والملفات (READ_EXTERNAL_STORAGE / FileProvider):</strong> يُستخدم فقط لتمكين المستخدم من اختيار صورته الشخصية أو مستند شهادة الميلاد/الرقم القومي من معرض الصور في جهازه ورفعها.",
+    secPermissionsItem4: "<strong>إذن الإنترنت والشبكة (INTERNET & ACCESS_NETWORK_STATE):</strong> للاتصال المشفر بخوادم الكنيسة عبر بروتوكول HTTPS ونقل واستقبال البيانات بأمان.",
+    secUsageTitle: "٥. كيفية استخدام المعلومات والأغراض الخدمية",
+    secUsageDesc: "تُعامل جميع البيانات المجمعة بسرية تامة ومقدسة، وتُستخدم فقط وحصرياً للأغراض التالية:",
+    secUsageItem1: "تنظيم ومتابعة حضور المخدومين في فصول مدارس الأحد والأنشطة الروحية والقداسات الإلهية.",
+    secUsageItem2: "تمكين التواصل الرعوي والتنظيمي المباشر بين خدام الفصول وأولياء الأمور بشأن مواعيد الخدمات وأنشطة الأبناء.",
+    secUsageItem3: "التنسيق الروحي مع الآباء الكهنة وآباء الاعتراف ومتابعة الرعاية الفردية.",
+    secUsageItem4: "إدارة جداول وسجلات مدرسة الشمامسة والامتحانات والدورات التعليمية الكنسية.",
+    secUsageItem5: "إرسال التنبيهات الإدارية وتذكيرات الأحداث الكنسية عبر الإشعارات وتطبيق الواتساب المعتمد.",
+    secUsageItem6: "حماية استقرار التطبيق وإصلاح المشاكل البرمجية استناداً إلى سجلات الأعطال الفنية.",
+    secSharingTitle: "٦. مزودو الخدمات السحابية ومشاركة البيانات",
+    secSharingDesc: "نحن <strong>لا نبيع أو نؤجر أو نتاجر أو نشارك</strong> بيانات المستخدمين مع أي شركات إعلانية أو أطراف تجارية أو وسطاء بيانات على الإطلاق. لا تتم مشاركة البيانات إلا مع مزودي البنية التحتية التقنية الصارمة اللازمة لتشغيل التطبيق:",
+    secSharingItem1: "<strong>Google Firebase (Firebase Cloud Messaging & Crashlytics):</strong> لتوصيل الإشعارات الفورية (Push Notifications) وجمع تقارير الأعطال الفنية لتحسين استقرار التطبيق. تلتزم جوجل بمعايير أمان وخصوصية عالمية صارمة متوافقة مع سياسة عائلات جوجل.",
+    secSharingItem2: "<strong>خدمات التخزين السحابي المشفر (Cloud Object Storage - S3 Compatible):</strong> لحفظ صور الملفات الشخصية والمستندات الإدارية المرفوعة بشكل مشفر وخاضع لضوابط أمان دقيقة.",
+    secSharingItem3: "<strong>بوابة التحقق عبر الواتساب والرسائل:</strong> لإرسال رموز التحقق لمرة واحدة (OTP) لتأكيد ملكية رقم الهاتف عند التسجيل أو إعادة تعيين كلمة المرور بأمان.",
+    secNoAdsTitle: "٧. سياسة انعدام الإعلانات والتتبع التجاري",
+    secNoAdsP1: "يتميز تطبيق تي إكليسيا بخلوه التام والشامل من أي محتوى إعلاني أو ترويجي. تم في كود التطبيق المصدري حذف إذن المعرّف الإعلاني لجوجل (Google Advertising ID) صراحة عبر الأمر البرمجي:",
+    secNoAdsP2: "هذا الإجراء البرمجي يضمن عدم قدرة أي خدمة على تتبع سلوك المستخدمين أو الأطفال عبر التطبيقات الأخرى لأغراض إعلانية، ويحقق الامتثال بنسبة 100% لمعايير برامج العائلات في Google Play.",
+    secSecurityTitle: "٨. أمان البيانات والتشفير",
+    secSecurityP1: "نطبق مجموعة متكاملة من المعايير الأمنية والتقنية لحماية سلامة وسرية البيانات:",
+    secSecurityItem1: "<strong>التشفير أثناء النقل (Encryption in Transit):</strong> تُنقل كافة الاتصالات بين التطبيق والخوادم عبر بروتوكولات الأمان القياسية المشفرة HTTPS / TLS.",
+    secSecurityItem2: "<strong>تشفير كلمات المرور:</strong> تُخزن كلمات المرور باستخدام خوارزميات التشفير ذات الاتجاه الواحد (BCrypt Hashing) ولا يمكن لأي مسؤول أو كاهن أو مبرمج الاطلاع عليها.",
+    secSecurityItem3: "<strong>إدارة الجلسات الآمنة:</strong> يُستخدم نظام JWT Tokens مع رموز تحديث مشفرة (Refresh Tokens) تنتهي صلاحيتها دورياً ويتم إلغاؤها فوراً عند تسجيل الخروج أو طلب الحذف.",
+    secSecurityItem4: "<strong>صلاحيات الوصول المقيدة (RBAC):</strong> تطبق الخوادم نظام صلاحيات هرمي صارم؛ حيث لا يتاح الاطلاع على بيانات الأسر والمستندات إلا للمسؤولين المصرح لهم كنسياً ورسمياً.",
+    secDeletionTitle: "٩. طلب حذف الحساب والبيانات (Account & Data Deletion)",
+    secDeletionP1: "امتثالاً لسياسة Google Play الصارمة لحذف البيانات، نتيح لجميع المستخدمين وأولياء الأمور خيارين رسميين ومؤكدين لطلب حذف حساباتهم وبياناتهم بالكامل:",
+    badgeInApp: "الخيار الأول",
+    titleInApp: "من داخل التطبيق",
+    descInApp: "يتيح هذا الإجراء تعطيل الحساب فوراً وتسجيل الخروج ومسح الـ Tokens، مع حفظ طلب مراجعة لدى إدارة الكنيسة وإتاحة إمكانية استعادة الحساب لاحقاً بالرقم القومي وكلمة المرور:",
+    badgeWebLink: "الخيار الثاني (الرابط الخارجي)",
+    titleWebLink: "طلب الحذف النهائي عبر الويب",
+    descWebLink: "إذا لم يعد التطبيق مثبتاً على جهازك، أو كنت ترغب في <strong>الحذف الشامل والنهائي لكافة البيانات الشخصية والمستندات فوراً</strong> دون إمكانية استعادتها، يمكنك تقديم طلب عبر نموذج حذف البيانات الخارجي المعتمد لمتجر Google Play:",
+    btnDeleteLabel: "فتح نموذج طلب الحذف النهائي (Google Form)",
+    retentionNote: "<strong>سياسة استبقاء السجلات التاريخية الكنسية (Data Retention Policy):</strong> عند طلب الحذف النهائي، يتم مسح بيانات الدخول، والتواصل، والصور الشخصية، والمستندات الإدارية بصورة تامة من النظام التشغيلي. يُستثنى من ذلك فقط السجلات التاريخية للرسامات الشماسية أو التوثيقات الكنسية المقدسة التي تحتفظ بها الكنيسة كأرشيف كنسي تاريخي ووثائقي دائم لا يتم تداوله تقنياً ولا يُشارك مع أي جهة خارج الكنيسة.",
+    secDataSafetyTitle: "١٠. جدول أمان البيانات المطابق لمتجر Google Play (Data Safety Matrix)",
+    secDataSafetyDesc: "يلخص الجدول التالي تصنيف ونوعية البيانات المجمعة، والغرض منها، وحالة التشفير ومشاركتها مع أطراف خارجية، وإمكانية حذفها:",
+    thType: "نوع البيانات",
+    thItems: "العناصر التفصيلية المجمعة",
+    thPurpose: "الغرض الأساسي",
+    thShared: "مشاركة مع طرف ثالث؟",
+    thEncrypted: "التشفير",
+    thDelete: "قابلة للحذف؟",
+    secRightsTitle: "١١. حقوق المستخدم وأولياء الأمور",
+    secRightsDesc: "يحق لكل مستخدم أو ولي أمر طفل مسجل في التطبيق في أي وقت ممارسة الحقوق القانونية التالية:",
+    secRightsItem1: "<strong>حق الاطلاع والوصول:</strong> مراجعة كافة البيانات الشخصية المسجلة الخاصة به أو بأطفاله عبر التطبيق.",
+    secRightsItem2: "<strong>حق التصحيح والتعديل:</strong> طلب تعديل أي بيانات غير صحيحة، أو تحديث العنوان أو أرقام الهواتف من شاشة تعديل الملف أو مراجعة إدارة الكنيسة.",
+    secRightsItem3: "<strong>حق سحب الموافقة والحذف:</strong> طلب حذف الحساب نهائياً ومسح البيانات عبر التطبيق أو نموذج الحذف الإلكتروني.",
+    secRightsItem4: "<strong>حق الاستفسار:</strong> التواصل المباشر مع إدارة الكنيسة المسؤولة عن الخصوصية للاستفسار عن أي بند يخص بياناته أو بيانات أبنائه.",
+    secContactTitle: "١٢. تواصل معنا والاستفسارات الرسمية",
+    secContactDesc: "إذا كانت لديك أي أسئلة أو استفسارات تتعلق بسياسة الخصوصية هذه أو رغبت في ممارسة حقوقك بشأن بياناتك أو بيانات أطفالك، يسعدنا التواصل معك عبر القنوات الرسمية التالية:",
+    emailLabel: "البريد الإلكتروني الرسمي للخصوصية والدعم",
+    orgLabel: "المؤسسة الكنسية المسؤولة",
     churchNameVal: "كنيسة السيدة العذراء والشهيد مارجرجس",
-    footerChurch: "كنيسة السيدة العذراء والشهيد مارجرجس — تطبيق تي إكليسيا",
-    footerCopy: "© 2026 تي إكليسيا (TeEcclesia). جميع الحقوق محفوظة."
+    footerChurch: "كنيسة السيدة العذراء والشهيد مارجرجس — تطبيق تي إكليسيا (TeEcclesia)",
+    footerCopy: "© 2026 جميع الحقوق محفوظة. وثيقة رسمية متوافقة مع متجر Google Play."
+  },
+  en: {
+    docTitle: "Privacy Policy & Data Safety Disclosures - TeEcclesia | St. Mary & St. George Church",
+    metaDescription: "Official Privacy Policy for TeEcclesia mobile application - St. Mary & St. George Church. Fully compliant with Google Play Families Policy, COPPA, and children privacy standards (ages 9+).",
+    brandTitle: "TeEcclesia",
+    brandSubtitle: "St. Mary & St. George Church",
+    langLabel: "العربية",
+    badgeTagOfficial: "Official Approved Document",
+    badgeTagFamilies: "Google Play Families Policy Compliant (Ages 9+)",
+    badgeTagVerified: "Human-Verified Registration",
+    heroTitle: "Privacy Policy & Data Safety",
+    heroSubtitle: "The official disclosure of how TeEcclesia collects, uses, and safeguards your and your children's data in exact accordance with our codebase and Google Play Families Policy requirements.",
+    metaDate: "Published & Updated: September 20, 2026",
+    metaScope: "Compliant with COPPA & Google Play Families Standards",
+    pillOverview: "Overview",
+    pillChildren: "1. Children's Privacy (9+)",
+    pillVerification: "2. Human Verification",
+    pillCollect: "3. Data Collected",
+    pillPermissions: "4. Permissions",
+    pillUsage: "5. Data Usage",
+    pillSharing: "6. Cloud Providers",
+    pillNoAds: "7. Zero Ads & Tracking",
+    pillSecurity: "8. Data Security",
+    pillDeletion: "9. Account Deletion",
+    pillDataSafety: "10. Data Safety Matrix",
+    pillRights: "11. User Rights",
+    pillContact: "12. Contact Us",
+    overviewTitle: "Overview & Responsible Entity",
+    overviewP1: "The <strong>TeEcclesia</strong> mobile application is a non-commercial ecclesiastical and community management platform, fully owned and operated by <strong>St. Mary & St. George Church</strong>. The application is designed to serve church families across all ages, organizing Sunday school education, church liturgies, spiritual meetings, and the Deacons School.",
+    overviewP2: "We are strictly committed to the highest data protection and privacy standards, especially concerning children and minors. This policy is written with precision to mirror our actual production codebase and databases, providing complete transparency to our congregation and Google Play reviewers.",
+    secChildrenTitle: "1. Target Audience & Children's Privacy (Ages 9 and Above)",
+    secChildrenP1: "TeEcclesia is classified as a <strong>Mixed-Audience Family Application</strong> serving parents, youth, Sunday school servants, and priests, as well as <strong>children starting from age 9</strong> who are enrolled in church Sunday school classes.",
+    secChildrenP2: "In strict compliance with the <strong>Children’s Online Privacy Protection Act (COPPA)</strong> and the <strong>Google Play Families Policy</strong>, we enforce the following safeguards:",
+    secChildrenItem1: "<strong>Mandatory Prior Parental Consent:</strong> Children under the age of 13 cannot register an account independently. When entering a National ID indicating an age under 13, the app strictly requires explicit parent/guardian consent: <em>\"I confirm that I am the child's parent/guardian and have consent to upload these administrative records\"</em>, alongside mandatory entry of a parent's phone number.",
+    secChildrenItem2: "<strong>Government Birth Certificate Requirement:</strong> For children under 13, the application requires the official mechanized birth certificate to verify identity and age and prevent impersonation, instead of an adult national ID card.",
+    secChildrenItem3: "<strong>Role & Permission Lock:</strong> A child's role is automatically locked to <em>\"Makhdoom\" (Sunday School Student)</em>. Children have no administrative privileges, cannot post public user-generated content, and cannot communicate with strangers.",
+    secChildrenItem4: "<strong>Zero Ads & No Behavioral Profiling:</strong> We display no advertisements, build no behavioral tracking profiles, and collect no advertising identifiers whatsoever.",
+    secVerificationTitle: "2. Human-in-the-Loop Verification for All Registrations",
+    reviewBannerTitle: "Strict Human Verification & Official Church Clergy Review",
+    reviewBannerDesc: "To protect our community and children, no user account is automatically activated or approved. Every single registration request undergoes rigorous manual verification by church priests and authorized administrative servants before access is granted.",
+    secVerificationP1: "To maintain the safety and integrity of our church family, our system implements the following human oversight steps:",
+    secVerificationItem1: "<strong>Documentary Matching:</strong> The submitted birth certificate or national ID card image is manually verified against the entered full legal name, national ID number, and date of birth.",
+    secVerificationItem2: "<strong>Ecclesiastical Confirmation:</strong> Church administration verifies the member's association with the church parish, Sunday school class, and designated confession father.",
+    secVerificationItem3: "<strong>Right of Rejection:</strong> Any unverified account, fraudulent document, or registration lacking proper parental consent is immediately rejected by human administrators, with explanatory feedback provided and no operational access granted.",
+    secCollectTitle: "3. Information We Collect & Technical Justification",
+    secCollectDesc: "Based on our mobile application code and backend database (PostgreSQL), we collect only the necessary data to facilitate church pastoral care and community administration:",
+    secCollectItem1: "<strong>Personal Identity & Contact Data:</strong> Quadruple Full Name, Egyptian National ID (14 digits, utilized for age calculation, identity verification, and account deduplication), Date of Birth, Gender, Mobile Phone, Optional Home Phone, Optional Email, and Detailed Home Address (Building No., Street, Branch, Area, Floor, Apartment, Landmark) used strictly for pastoral family visits.",
+    secCollectItem2: "<strong>Photos & Administrative Documents:</strong> Profile account photo, National ID card photo (adults 13+), Official mechanized birth certificate (children under 13), and Deacon Ordination Certificate (for ordained deacons). Files are stored in secure, encrypted cloud storage.",
+    secCollectItem3: "<strong>Pastoral & Church Service Data:</strong> Church role (Makhdoom, Khadem, Parent, Priest, Admin), Confession Priest information (internal church priest or external priest's name, church, and phone for pastoral coordination), educational stage, Deacons School academic status and tuition payment status, Liturgy and Sunday school attendance timestamps logged via QR code scans, and parent-child family linkage.",
+    secCollectItem4: "<strong>Technical & Diagnostic Data:</strong> Device push notification token (FCM Token) via Google Firebase for church schedule alerts, and non-fatal crash logs via Firebase Crashlytics to diagnose software exceptions and ensure app stability.",
+    noCollectBox: "<strong>Data We Explicitly DO NOT Collect:</strong> We do not request or collect real-time GPS location, we do not record audio or access the device microphone, we do not access device contacts/address book, we process no in-app financial transactions or credit cards, and we collect no Advertising IDs (AD_ID).",
+    secPermissionsTitle: "4. Device Permissions & Operational Justification",
+    secPermissionsDesc: "TeEcclesia requests only the absolute minimum operating system permissions required for core church features:",
+    secPermissionsItem1: "<strong>Camera Permission (android.permission.CAMERA):</strong> Used exclusively to scan church QR codes for recording attendance at liturgies and Sunday school classes, and for capturing profile and verification document photos within registration screens. The camera is never accessed in the background.",
+    secPermissionsItem2: "<strong>Push Notifications Permission (android.permission.POST_NOTIFICATIONS):</strong> Used to send timely alerts regarding liturgy times, feast dates, Sunday school announcements, and spiritual meetings. Users can disable notifications anytime in device settings.",
+    secPermissionsItem3: "<strong>File & Media Storage Access (READ_EXTERNAL_STORAGE / FileProvider):</strong> Used solely to allow users to select their profile picture, national ID card, or child's birth certificate from their local device gallery.",
+    secPermissionsItem4: "<strong>Internet & Network State (INTERNET & ACCESS_NETWORK_STATE):</strong> Required for secure, encrypted communication with church backend servers over HTTPS.",
+    secUsageTitle: "5. How We Use Collected Information",
+    secUsageDesc: "All collected data is treated with utmost reverence and confidentiality, used exclusively for the following pastoral purposes:",
+    secUsageItem1: "Tracking and organizing student attendance in Sunday school classes and church liturgies.",
+    secUsageItem2: "Facilitating pastoral and organizational communication between Sunday school servants and parents regarding activities.",
+    secUsageItem3: "Spiritual coordination with confession fathers and providing individual pastoral care.",
+    secUsageItem4: "Managing Deacons School rosters, educational curricula, and ecclesiastical studies.",
+    secUsageItem5: "Delivering important church announcements and event reminders via notifications and verified WhatsApp alerts.",
+    secUsageItem6: "Maintaining application stability and fixing software defects based on diagnostic crash logs.",
+    secSharingTitle: "6. Cloud Service Providers & Data Sharing",
+    secSharingDesc: "We <strong>never sell, rent, monetize, or trade</strong> personal data to any commercial advertisers, data brokers, or third parties. Data is shared exclusively with strict cloud infrastructure providers necessary for app operation:",
+    secSharingItem1: "<strong>Google Firebase (Firebase Cloud Messaging & Crashlytics):</strong> For push notifications and crash reporting to maintain app stability, compliant with Google Play Families standards.",
+    secSharingItem2: "<strong>Secure Cloud Object Storage (S3-Compatible):</strong> For storing encrypted profile photos and uploaded identity documents with strict access controls.",
+    secSharingItem3: "<strong>WhatsApp / SMS Verification Gateway:</strong> For delivering one-time passwords (OTP) to securely verify mobile phone ownership during registration and password resets.",
+    secNoAdsTitle: "7. Zero Advertisements & Commercial Tracking Policy",
+    secNoAdsP1: "TeEcclesia is completely free of advertisements, commercial promotions, or marketing trackers. In our mobile codebase, the Google Advertising ID permission is explicitly removed:",
+    secNoAdsP2: "This programmatic removal ensures that no advertising SDK can track users or children across other apps, guaranteeing 100% compliance with Google Play Families Program requirements.",
+    secSecurityTitle: "8. Data Security & Storage",
+    secSecurityP1: "We apply industry-standard technical and organizational security controls to protect your personal information:",
+    secSecurityItem1: "<strong>Encryption in Transit:</strong> All communications between the app and servers are protected using standard TLS/HTTPS encryption protocols.",
+    secSecurityItem2: "<strong>Password Hashing:</strong> Passwords are encrypted using one-way BCrypt cryptographic hashing and can never be read by any administrator, priest, or developer.",
+    secSecurityItem3: "<strong>Secure Token Management:</strong> Authentication is handled via JWT tokens and encrypted refresh tokens that expire periodically and are revoked upon logout or deletion requests.",
+    secSecurityItem4: "<strong>Role-Based Access Control (RBAC):</strong> Server endpoints enforce strict hierarchical authorization, restricting access to records to authorized church personnel only.",
+    secDeletionTitle: "9. Account & Data Deletion Policy",
+    secDeletionP1: "In compliance with Google Play Account Deletion requirements, we provide our users and parents with two distinct, fully supported deletion paths:",
+    badgeInApp: "Option 1",
+    titleInApp: "From Within the Mobile App",
+    descInApp: "Deactivates your account immediately, revokes all login sessions/tokens, logs you out, and submits an administrative deletion request while allowing a recovery window via National ID and password:",
+    badgeWebLink: "Option 2 (External Web Link)",
+    titleWebLink: "Permanent Erasure Web Request",
+    descWebLink: "If the app is uninstalled, or you wish to request the <strong>immediate, permanent erasure of all personal data and uploaded documents</strong> without recovery, you can submit an official request via our dedicated Google Form:",
+    btnDeleteLabel: "Open Permanent Deletion Request Form (Google Form)",
+    retentionNote: "<strong>Ecclesiastical Archival Data Retention Policy:</strong> Upon permanent deletion, personal login credentials, contact data, profile photos, and uploaded documents are permanently erased from our operational systems. Exception is made solely for historical church sacramental records (such as deacon ordination records or sacred church registers) retained as permanent church historical archives in accordance with church governance, which are never shared outside the church.",
+    secDataSafetyTitle: "10. Google Play Data Safety Summary Matrix",
+    secDataSafetyDesc: "The table below provides a concise mapping of all collected data categories, their intended purpose, transit encryption, and deletion mechanisms:",
+    thType: "Data Category",
+    thItems: "Specific Data Elements",
+    thPurpose: "Primary Purpose",
+    thShared: "Shared with 3rd Party?",
+    thEncrypted: "Encryption Status",
+    thDelete: "Deletable?",
+    secRightsTitle: "11. User & Parent Rights",
+    secRightsDesc: "Every member or parent of a registered child holds the following legal rights regarding their stored data:",
+    secRightsItem1: "<strong>Right of Access:</strong> Review all personal information recorded for yourself or your children directly within the app.",
+    secRightsItem2: "<strong>Right of Rectification:</strong> Request correction of inaccurate information or update addresses and phone numbers via profile edit screens.",
+    secRightsItem3: "<strong>Right of Deletion & Revocation:</strong> Request account deactivation or permanent data wiping via the app or web form at any time.",
+    secRightsItem4: "<strong>Right of Inquiry:</strong> Contact church administration directly regarding data safety and privacy practices.",
+    secContactTitle: "12. Contact Us & Privacy Inquiries",
+    secContactDesc: "For any inquiries or assistance regarding this Privacy Policy or data subject requests, please contact our official church administration via:",
+    emailLabel: "Official Privacy & Support Email",
+    orgLabel: "Responsible Church Organization",
+    churchNameVal: "St. Mary & St. George Church",
+    footerChurch: "St. Mary & St. George Church — TeEcclesia Mobile App",
+    footerCopy: "© 2026 All Rights Reserved. Official Document compliant with Google Play Store policies."
   }
 };
 
-let currentLang = localStorage.getItem('te_privacy_lang') || 'en';
+let currentLang = localStorage.getItem('te_privacy_lang') || 'ar';
+
+function renderSafetyTable(lang) {
+  const tbody = document.getElementById('safetyTableBody');
+  if (!tbody) return;
+
+  const data = safetyTableData[lang];
+  let html = '';
+
+  data.forEach(row => {
+    const isSharedNo = row.shared === "لا تتم مشاركتها" || row.shared === "لا تتم مشاركتها نهائياً" || row.shared === "Never shared" || row.shared === "Never shared with third parties";
+    const sharedClass = isSharedNo ? 'no' : 'security';
+    const deleteClass = 'yes';
+
+    html += `
+      <tr>
+        <td><strong>${row.type}</strong></td>
+        <td>${row.items}</td>
+        <td>${row.purpose}</td>
+        <td><span class="badge-cell ${sharedClass}">${row.shared}</span></td>
+        <td><span class="badge-cell security">${row.encrypted}</span></td>
+        <td><span class="badge-cell ${deleteClass}">${row.delete}</span></td>
+      </tr>
+    `;
+  });
+
+  tbody.innerHTML = html;
+}
 
 function applyLanguage(lang) {
   currentLang = lang;
@@ -123,7 +347,12 @@ function applyLanguage(lang) {
   document.body.className = isAr ? 'lang-ar' : 'lang-en';
 
   const strings = translations[lang];
-  document.title = strings.pageTitle;
+  document.title = strings.docTitle;
+
+  const metaDesc = document.getElementById('metaDescription');
+  if (metaDesc) {
+    metaDesc.setAttribute('content', strings.metaDescription);
+  }
 
   for (const [id, value] of Object.entries(strings)) {
     const el = document.getElementById(id);
@@ -131,6 +360,8 @@ function applyLanguage(lang) {
       el.innerHTML = value;
     }
   }
+
+  renderSafetyTable(lang);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -139,7 +370,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const langBtn = document.getElementById('langToggleBtn');
   if (langBtn) {
     langBtn.addEventListener('click', () => {
-      const nextLang = currentLang === 'en' ? 'ar' : 'en';
+      const nextLang = currentLang === 'ar' ? 'en' : 'ar';
       applyLanguage(nextLang);
     });
   }
@@ -150,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', () => {
     let current = '';
-    const scrollPos = window.scrollY + 120;
+    const scrollPos = window.scrollY + 130;
 
     sections.forEach(section => {
       if (scrollPos >= section.offsetTop) {
