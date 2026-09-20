@@ -135,7 +135,55 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 7. Navigation pills active state on scroll
+  // 7. Quick Nav Dynamic Edge Fading & Wheel Scrolling
+  const quickNav = document.getElementById("quickNav");
+  function updateQuickNavFades() {
+    if (!quickNav) return;
+    const scrollLeft = quickNav.scrollLeft;
+    const maxScroll = quickNav.scrollWidth - quickNav.clientWidth;
+    const isRtl = document.documentElement.getAttribute("dir") === "rtl" || document.body.classList.contains("lang-ar");
+
+    if (maxScroll <= 4) {
+      quickNav.style.setProperty("--nav-mask-left", "black");
+      quickNav.style.setProperty("--nav-mask-left-stop", "0px");
+      quickNav.style.setProperty("--nav-mask-right", "black");
+      quickNav.style.setProperty("--nav-mask-right-stop", "0px");
+      return;
+    }
+
+    const currentScroll = Math.abs(scrollLeft);
+    const atStart = currentScroll <= 4;
+    const atEnd = currentScroll >= maxScroll - 4;
+
+    if (isRtl) {
+      // In RTL: right is start, left is end
+      quickNav.style.setProperty("--nav-mask-right", atStart ? "black" : "transparent");
+      quickNav.style.setProperty("--nav-mask-right-stop", atStart ? "0px" : "36px");
+      quickNav.style.setProperty("--nav-mask-left", atEnd ? "black" : "transparent");
+      quickNav.style.setProperty("--nav-mask-left-stop", atEnd ? "0px" : "36px");
+    } else {
+      // In LTR: left is start, right is end
+      quickNav.style.setProperty("--nav-mask-left", atStart ? "black" : "transparent");
+      quickNav.style.setProperty("--nav-mask-left-stop", atStart ? "0px" : "36px");
+      quickNav.style.setProperty("--nav-mask-right", atEnd ? "black" : "transparent");
+      quickNav.style.setProperty("--nav-mask-right-stop", atEnd ? "0px" : "36px");
+    }
+  }
+
+  if (quickNav) {
+    quickNav.addEventListener("scroll", updateQuickNavFades, { passive: true });
+    window.addEventListener("resize", updateQuickNavFades);
+    window.addEventListener("te-language-changed", () => setTimeout(updateQuickNavFades, 50));
+    quickNav.addEventListener("wheel", e => {
+      if (e.deltaY !== 0 && Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+        e.preventDefault();
+        quickNav.scrollLeft += e.deltaY;
+      }
+    }, { passive: false });
+    updateQuickNavFades();
+  }
+
+  // 8. Navigation pills active state on scroll
   const sections = document.querySelectorAll("main section");
   const navPills = document.querySelectorAll(".nav-pill");
 
@@ -153,6 +201,13 @@ document.addEventListener("DOMContentLoaded", () => {
       pill.classList.remove("active");
       if (pill.getAttribute("href") === `#${current}`) {
         pill.classList.add("active");
+        if (quickNav) {
+          const pillRect = pill.getBoundingClientRect();
+          const navRect = quickNav.getBoundingClientRect();
+          if (pillRect.left < navRect.left + 36 || pillRect.right > navRect.right - 36) {
+            pill.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
+          }
+        }
       }
     });
   });

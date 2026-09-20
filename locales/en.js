@@ -49,10 +49,10 @@
       }
     ],
     strings: {
-      docTitle: "Privacy Policy & Data Safety Disclosures - TeEcclesia | St. Mary & St. George Church",
-      metaDescription: "Official Privacy Policy for TeEcclesia mobile application - St. Mary & St. George Church. Fully compliant with Google Play Families Policy, COPPA, and children privacy standards (ages 9+).",
+      docTitle: "Privacy Policy & Data Safety Disclosures - TeEcclesia | St. Mary & St. George Church - Boulaq El-Dakrour - Central Giza",
+      metaDescription: "Official Privacy Policy for TeEcclesia mobile application - St. Mary & St. George Church - Boulaq El-Dakrour - Central Giza. Fully compliant with Google Play Families Policy, COPPA, and children privacy standards (ages 9+).",
       brandTitle: "TeEcclesia",
-      brandSubtitle: "St. Mary & St. George Church",
+      brandSubtitle: "St. Mary & St. George Church - Boulaq El-Dakrour - Central Giza",
       langLabel: "العربية",
       themeLabelDark: "Dark Mode",
       themeLabelLight: "Light Mode",
@@ -86,7 +86,7 @@
       secNum11: "11",
       secNum12: "12",
       overviewTitle: "Overview & Responsible Entity",
-      overviewP1: "The <strong>TeEcclesia</strong> mobile application is a non-commercial ecclesiastical and community management platform, fully owned and operated by <strong>St. Mary & St. George Church</strong>. The application is designed to serve church families across all ages, organizing Sunday school education, church liturgies, spiritual meetings, and the Deacons School.",
+      overviewP1: "The <strong>TeEcclesia</strong> mobile application is a non-commercial ecclesiastical and community management platform, fully owned and operated by <strong>St. Mary & St. George Church - Boulaq El-Dakrour - Central Giza</strong>. The application is designed to serve church families across all ages, organizing Sunday school education, church liturgies, spiritual meetings, and the Deacons School.",
       overviewP2: "We are strictly committed to the highest data protection and privacy standards, especially concerning children and minors. This document transparently discloses our data handling practices for users, parents, and Google Play reviewers.",
       secChildrenTitle: "Target Audience & Children's Privacy (Ages 9+)",
       secChildrenP1: "TeEcclesia is classified as a <strong>Mixed-Audience Family Application</strong> serving parents, youth, Sunday school servants, and priests, as well as <strong>children starting from age 9</strong> who are enrolled in church Sunday school classes.",
@@ -166,8 +166,8 @@
       secContactDesc: "For any inquiries or assistance regarding this Privacy Policy or data subject requests, please contact our official church administration via:",
       emailLabel: "Official Privacy & Support Email",
       orgLabel: "Responsible Church Organization",
-      churchNameVal: "St. Mary & St. George Church",
-      footerChurch: "St. Mary & St. George Church — TeEcclesia Mobile App",
+      churchNameVal: "St. Mary & St. George Church - Boulaq El-Dakrour - Central Giza",
+      footerChurch: "St. Mary & St. George Church - Boulaq El-Dakrour - Central Giza — TeEcclesia Mobile App",
       footerCopy: "© 2026 All Rights Reserved. Official Document compliant with Google Play Store policies."
     }
   };

@@ -143,7 +143,7 @@ body {
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 body.lang-ar {
@@ -169,7 +169,7 @@ body.lang-ar {
   -webkit-backdrop-filter: blur(14px);
   border-bottom: 1px solid var(--card-border);
   box-shadow: var(--shadow-sm);
-  transition: background 0.3s ease, border-color 0.3s ease;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .nav-bar {
@@ -314,24 +314,44 @@ body.lang-ar {
   -webkit-backdrop-filter: blur(10px);
   padding: 12px 0;
   border-bottom: 1px solid var(--card-border);
-  transition: background 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .quick-nav {
   display: flex;
+  align-items: center;
   gap: 8px;
   overflow-x: auto;
-  padding-bottom: 4px;
-  scrollbar-width: thin;
+  padding: 6px 12px 8px 12px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+
+  /* Smooth edge fading on overflow */
+  --nav-mask-left: transparent;
+  --nav-mask-left-stop: 36px;
+  --nav-mask-right: transparent;
+  --nav-mask-right-stop: 36px;
+
+  mask-image: linear-gradient(
+    to right,
+    var(--nav-mask-left, transparent) 0%,
+    black var(--nav-mask-left-stop, 36px),
+    black calc(100% - var(--nav-mask-right-stop, 36px)),
+    var(--nav-mask-right, transparent) 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    var(--nav-mask-left, transparent) 0%,
+    black var(--nav-mask-left-stop, 36px),
+    black calc(100% - var(--nav-mask-right-stop, 36px)),
+    var(--nav-mask-right, transparent) 100%
+  );
 }
 
 .quick-nav::-webkit-scrollbar {
-  height: 4px;
-}
-
-.quick-nav::-webkit-scrollbar-thumb {
-  background: var(--card-border-hover);
-  border-radius: 4px;
+  display: none;
 }
 
 .nav-pill {
