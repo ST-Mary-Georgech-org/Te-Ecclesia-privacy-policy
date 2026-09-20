@@ -54,12 +54,16 @@ function applyTheme(theme) {
   const sunIcon = document.getElementById("themeIconSun");
   const moonIcon = document.getElementById("themeIconMoon");
   const themeBtn = document.getElementById("themeToggleBtn");
+  const themeLabel = document.getElementById("themeLabel");
 
   const currentLang = window.TeI18n ? window.TeI18n.getCurrentLanguage() : "ar";
 
   if (theme === "dark") {
     if (sunIcon) sunIcon.style.display = "block";
     if (moonIcon) moonIcon.style.display = "none";
+    if (themeLabel) {
+      themeLabel.textContent = currentLang === "ar" ? "الوضع النهاري" : "Light Mode";
+    }
     if (themeBtn) {
       const label = currentLang === "ar" ? "التحويل للوضع النهاري" : "Switch to Light Mode";
       themeBtn.setAttribute("title", label);
@@ -68,6 +72,9 @@ function applyTheme(theme) {
   } else {
     if (sunIcon) sunIcon.style.display = "none";
     if (moonIcon) moonIcon.style.display = "block";
+    if (themeLabel) {
+      themeLabel.textContent = currentLang === "ar" ? "الوضع الليلي" : "Dark Mode";
+    }
     if (themeBtn) {
       const label = currentLang === "ar" ? "التحويل للوضع الليلي" : "Switch to Dark Mode";
       themeBtn.setAttribute("title", label);
@@ -134,7 +141,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.addEventListener("scroll", () => {
     let current = "";
-    const scrollPos = window.scrollY + 130;
+    const scrollPos = window.scrollY + 175;
 
     sections.forEach(section => {
       if (scrollPos >= section.offsetTop) {
